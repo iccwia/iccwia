@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -35,4 +35,346 @@
       width="100%"
     />
   </body>
+</html>
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给你的惊喜</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 配置Tailwind自定义颜色和字体 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF4B91',
+                        secondary: '#6B7280',
+                        accent: '#FFD166',
+                        dark: '#2A2A2A'
+                    },
+                    fontFamily: {
+                        cute: ['"Comic Sans MS"', '"Marker Felt"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .gift-box-shadow {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 
+                            inset 0 -10px 15px -3px rgba(0, 0, 0, 0.1);
+            }
+            .gift-ribbon {
+                transform-origin: center top;
+                animation: ribbon-float 3s ease-in-out infinite;
+            }
+            .gift-box {
+                animation: box-float 4s ease-in-out infinite;
+            }
+            .gift-box-opening .box-lid {
+                animation: open-lid 0.8s ease forwards;
+            }
+            .btn-bounce {
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+            .btn-bounce:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px -10px rgba(0, 0, 0, 0.3);
+            }
+            .btn-bounce::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 5px;
+                height: 5px;
+                background: rgba(255, 255, 255, 0.5);
+                border-radius: 50%;
+                transform: scale(1, 1) translate(-50%, -50%);
+                transform-origin: 50% 50%;
+            }
+            .btn-bounce:active::after {
+                animation: ripple 0.6s ease-out;
+            }
+            @keyframes ribbon-float {
+                0%, 100% { transform: rotate(-2deg); }
+                50% { transform: rotate(2deg); }
+            }
+            @keyframes box-float {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-10px); }
+            }
+            @keyframes open-lid {
+                0% { transform: translateY(0); }
+                100% { transform: translateY(-30px) rotateX(-30deg); }
+            }
+            .fade-in {
+                animation: fadeIn 0.8s ease forwards;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: scale(0.8); }
+                to { opacity: 1; transform: scale(1); }
+            }
+            .slide-up {
+                animation: slideUp 0.6s ease forwards;
+            }
+            @keyframes slideUp {
+                from { opacity: 0; transform: translateY(30px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .why-message {
+                animation: shake 0.5s ease-in-out, fadeIn 0.5s ease forwards;
+            }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                20% { transform: translateX(-10px); }
+                40% { transform: translateX(10px); }
+                60% { transform: translateX(-5px); }
+                80% { transform: translateX(5px); }
+            }
+            .pulse {
+                animation: pulse 1.5s infinite;
+            }
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+            }
+            @keyframes ripple {
+                0% { transform: scale(0, 0); opacity: 0.5; }
+                100% { transform: scale(20, 20); opacity: 0; }
+            }
+            .scale-in {
+                animation: scaleIn 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+            }
+            @keyframes scaleIn {
+                0% { transform: scale(0.5); opacity: 0; }
+                70% { transform: scale(1.1); }
+                100% { transform: scale(1); opacity: 1; }
+            }
+            .page-transition {
+                animation: pageTransition 0.6s ease forwards;
+            }
+            @keyframes pageTransition {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-pink-50 to-purple-50 min-h-screen flex flex-col items-center justify-center p-4 font-cute overflow-hidden">
+    <!-- 初始页面：礼物盒和按钮 -->
+    <div id="initial-screen" class="text-center w-full max-w-md">
+        <!-- 礼物盒容器 -->
+        <div class="relative w-64 h-64 mx-auto mb-10 gift-box cursor-pointer" id="gift-container">
+            <!-- 盒子底部 -->
+            <div class="absolute bottom-0 w-full h-48 bg-primary rounded-t-3xl gift-box-shadow"></div>
+            
+            <!-- 盒子盖子 -->
+            <div class="absolute top-0 w-full h-16 bg-primary/90 rounded-b-3xl border-b-4 border-primary/70 gift-box-shadow box-lid"></div>
+            
+            <!-- 丝带十字 -->
+            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-6 h-full bg-accent gift-ribbon"></div>
+            <div class="absolute top-1/2 left-0 w-full h-6 bg-accent gift-ribbon"></div>
+            
+            <!-- 丝带蝴蝶结 -->
+            <div class="absolute top-[-20px] left-1/2 transform -translate-x-1/2 w-16 h-16 bg-accent rounded-full"></div>
+            <div class="absolute top-[-10px] left-1/2 transform -translate-x-1/2 w-20 h-6 bg-accent"></div>
+        </div>
+        
+        <!-- 问题文字 -->
+        <h1 class="text-[clamp(1.5rem,5vw,2.5rem)] font-bold text-dark mb-12 slide-up opacity-0" style="animation-delay: 0.3s">
+            你愿意接受这个礼物吗？
+        </h1>
+        
+        <!-- 为什么提示信息 -->
+        <div id="why-message" class="hidden why-message fixed top-1/4 left-1/2 transform -translate-x-1/2 bg-white p-6 rounded-2xl shadow-2xl z-50">
+            <p class="text-2xl font-bold text-primary">为什么😭😭😭</p>
+        </div>
+        
+        <!-- 按钮容器 -->
+        <div class="flex justify-center gap-4 slide-up opacity-0" style="animation-delay: 0.6s">
+            <button id="accept-btn" class="btn-bounce bg-primary text-white px-10 py-5 rounded-full text-xl font-bold shadow-lg transform transition-all duration-300">
+                接受
+            </button>
+            <button id="decline-btn" class="btn-bounce bg-secondary text-white px-10 py-5 rounded-full text-xl font-bold shadow-lg transform transition-all duration-300">
+                不接受
+            </button>
+        </div>
+    </div>
+    
+    <!-- 接受后的页面：图片和文字 -->
+    <div id="surprise-screen" class="hidden text-center w-full max-w-md page-transition">
+        <h2 class="text-[clamp(1.5rem,5vw,2.5rem)] font-bold text-primary mb-6 scale-in opacity-0" style="animation-delay: 0.2s">
+            感谢你愿意陪我！
+        </h2>
+        <div class="relative rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 hover:scale-[1.02] scale-in opacity-0" style="animation-delay: 0.5s">
+            <img src="https://picsum.photos/seed/concert/600/400" alt="演唱会门票" class="w-full max-w-md mx-auto">
+            <div class="absolute bottom-0 left-0 right-0 bg-dark/70 text-white p-4">
+                <p class="text-xl font-bold">我们一起去看演唱会吧！</p>
+            </div>
+        </div>
+        <button id="restart-btn" class="mt-8 bg-accent text-dark px-6 py-3 rounded-full text-lg font-bold shadow-md hover:bg-accent/80 transition-all btn-bounce scale-in opacity-0" style="animation-delay: 0.8s">
+            <i class="fa fa-refresh mr-2"></i>再看一次
+        </button>
+    </div>
+
+    <script>
+        // 定义四个缩放等级
+        const scales = [1.0, 1.2, 1.4, 1.6];
+        let currentLevel = 0;
+        let giftOpened = false;
+        
+        // 获取DOM元素
+        const initialScreen = document.getElementById('initial-screen');
+        const surpriseScreen = document.getElementById('surprise-screen');
+        const acceptBtn = document.getElementById('accept-btn');
+        const declineBtn = document.getElementById('decline-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const whyMessage = document.getElementById('why-message');
+        const giftContainer = document.getElementById('gift-container');
+        
+        // 页面加载时的动画
+        window.addEventListener('load', () => {
+            // 触发初始动画
+            document.querySelectorAll('.slide-up').forEach(el => {
+                el.style.opacity = '1';
+            });
+        });
+        
+        // 礼物盒点击效果
+        giftContainer.addEventListener('click', () => {
+            if (!giftOpened) {
+                giftContainer.classList.add('gift-box-opening');
+                giftOpened = true;
+                
+                // 3秒后自动关闭盖子
+                setTimeout(() => {
+                    giftContainer.classList.remove('gift-box-opening');
+                    giftOpened = false;
+                }, 3000);
+            } else {
+                giftContainer.classList.remove('gift-box-opening');
+                giftOpened = false;
+            }
+        });
+        
+        // 不接受按钮点击事件
+        declineBtn.addEventListener('click', () => {
+            // 先隐藏为什么提示（如果显示的话）
+            whyMessage.classList.add('hidden');
+            
+            // 强制重绘，确保动画能重新触发
+            void whyMessage.offsetWidth;
+            
+            // 检查是否还有更大的等级
+            if (currentLevel < scales.length - 1) {
+                currentLevel++;
+                
+                // 更新按钮大小
+                acceptBtn.style.transform = `scale(${scales[currentLevel]})`;
+                acceptBtn.style.boxShadow = `0 10px 25px -5px rgba(255, 75, 145, 0.${3 + currentLevel})`;
+                
+                // 计算不接受按钮的缩放比例（与接受按钮相反）
+                const declineScale = 1 - (currentLevel * 0.15);
+                declineBtn.style.transform = `scale(${declineScale})`;
+                
+                // 随机移动不接受按钮
+                declineBtn.style.position = 'relative';
+                const moveAmount = 30 + (currentLevel * 10);
+                declineBtn.style.left = Math.random() > 0.5 ? `-${moveAmount}px` : `${moveAmount}px`;
+                
+                // 添加按钮震动效果
+                acceptBtn.classList.add('animate-bounce');
+                setTimeout(() => {
+                    acceptBtn.classList.remove('animate-bounce');
+                }, 800);
+                
+                // 当达到第三级（最后一级前），让接受按钮开始脉动
+                if (currentLevel === scales.length - 2) {
+                    acceptBtn.classList.add('pulse');
+                }
+                
+                // 礼物盒配合动一下
+                giftContainer.classList.add('gift-box-opening');
+                setTimeout(() => {
+                    giftContainer.classList.remove('gift-box-opening');
+                }, 500);
+            } else {
+                // 已经是最大等级，每次点击都显示为什么提示
+                whyMessage.classList.remove('hidden');
+                
+                // 让接受按钮强烈震动
+                acceptBtn.classList.add('animate-bounce');
+                setTimeout(() => {
+                    acceptBtn.classList.remove('animate-bounce');
+                }, 1500);
+                
+                // 让不接受按钮也轻微震动
+                declineBtn.classList.add('animate-bounce');
+                setTimeout(() => {
+                    declineBtn.classList.remove('animate-bounce');
+                }, 1000);
+                
+                // 礼物盒剧烈反应
+                giftContainer.classList.add('gift-box-opening');
+                setTimeout(() => {
+                    giftContainer.classList.remove('gift-box-opening');
+                }, 800);
+            }
+        });
+        
+        // 接受按钮点击事件
+        acceptBtn.addEventListener('click', () => {
+            // 隐藏初始页面，显示惊喜页面
+            initialScreen.classList.add('hidden');
+            surpriseScreen.classList.remove('hidden');
+            
+            // 触发惊喜页面的动画
+            setTimeout(() => {
+                document.querySelectorAll('#surprise-screen .scale-in').forEach(el => {
+                    el.style.opacity = '1';
+                });
+            }, 50);
+        });
+        
+        // 重新开始按钮点击事件
+        restartBtn.addEventListener('click', () => {
+            // 重置按钮状态和等级
+            currentLevel = 0;
+            acceptBtn.style.transform = 'scale(1)';
+            acceptBtn.style.boxShadow = '';
+            acceptBtn.classList.remove('pulse');
+            declineBtn.style.transform = 'scale(1)';
+            declineBtn.style.position = '';
+            declineBtn.style.left = '';
+            whyMessage.classList.add('hidden');
+            giftContainer.classList.remove('gift-box-opening');
+            giftOpened = false;
+            
+            // 重置动画状态
+            document.querySelectorAll('#surprise-screen .scale-in').forEach(el => {
+                el.style.opacity = '0';
+            });
+            
+            // 显示初始页面，隐藏惊喜页面
+            surpriseScreen.classList.add('hidden');
+            initialScreen.classList.remove('hidden');
+        });
+        
+        // 点击为什么提示信息时隐藏它
+        whyMessage.addEventListener('click', () => {
+            whyMessage.classList.add('hidden');
+        });
+    </script>
+</body>
 </html>
